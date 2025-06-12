@@ -21,7 +21,7 @@ const useSearch = < Format extends FormatObjectType = FormatObjectType>(initialS
 		if (typeof value === 'object'){
 			return full.concat((value).map(v => [key, v.toString()]))
 		} else {
-			full.concat([key, value.toString()])
+			return full.concat([[key, value.toString()]])
 		}
 	}, [] as [string, string][]))
 	const theProxy: UseSearchProxy<Format> = new Proxy((() => initialSeach) as unknown as TheProxy<Format>, {
@@ -76,3 +76,5 @@ const useSearch = < Format extends FormatObjectType = FormatObjectType>(initialS
 	})
 	return theProxy;
 }
+
+export default useSearch
