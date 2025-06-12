@@ -1,9 +1,9 @@
 {
   "name": "use-search-hook",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "utilize this to quickly manipulate the search section of your url. Navigation may be enabled, but it not assumed. While built to be a react hook, it can be used in any style of Javascript application",
   "keywords": ["url", "search", "tool", "URLSearchParams"],
-  "main": "build/index.js",
+  "main": "dist/index.js",
   "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
