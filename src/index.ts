@@ -1,7 +1,7 @@
 type FormatObjectType = {[key in Exclude<string, "config" | "full">]: string|boolean|number | (string|boolean|number)[]}
 
 type TheProxy<Format = FormatObjectType> = Format & {
-	(): (newSearch: Partial<Format>, navigate?: boolean) => void
+	(newSearch: Partial<Format>, navigate?: boolean): void
 	config: {
 		noReset: boolean;
 		navigate: boolean,
