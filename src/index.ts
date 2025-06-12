@@ -11,11 +11,7 @@ type TheProxy<Format = FormatObjectType> = Format & {
 
 type UseSearchProxy <Format extends FormatObjectType = FormatObjectType> = TheProxy<Format>
 
-const useSearch = < Format extends FormatObjectType = FormatObjectType>(initialSeach: Format): UseSearchProxy<Format> => {
-	let config: TheProxy["config"] = {
-		navigate: false,
-		noReset: false
-	}
+const useSearch = < Format extends FormatObjectType = FormatObjectType>(config: TheProxy["config"] = {navigate: false, noReset: false}): UseSearchProxy<Format> => {
 	const setSearch = (searchParams: URLSearchParams, navigate = config.navigate) => {
 		if (typeof window !== 'undefined'){
 			if (navigate){
@@ -28,19 +24,17 @@ const useSearch = < Format extends FormatObjectType = FormatObjectType>(initialS
 	}
 	const objToParams = (current: Format) => new URLSearchParams(Object.entries(current).reduce((full: [string, string][], [key, value]: [string, FormatObjectType[keyof FormatObjectType]]) => {
 		if (typeof value === 'object'){
-			return full.concat((value).map(v => [key, v.toString()]))
+			return full.concat((value).reduce((full, v) => {
+				return v === undefined ? full : [key, v.toString()]
+			}, [])
+		)		
 		} else {
-			return full.concat([[key, value.toString()]])
+			return value === undefined ? full : full.concat([[key, value.toString()]])
 		}
 	}, [] as [string, string][]))
-	const theProxy: UseSearchProxy<Format> = new Proxy((() => initialSeach) as unknown as TheProxy<Format>, {
+	const theProxy: UseSearchProxy<Format> = new Proxy((() => config) as unknown as TheProxy<Format>, {
 		apply: (t, thisArg, [newSearch, navigate]) => {
-			const searchParams = new URLSearchParams(Object.entries(newSearch).filter(([_key, value]) => value != undefined).reduce((full: [string, string][], [key, value]: [string, string | boolean | number | (string|boolean|number)[]]) => {
-				if (typeof value === 'object'){
-					return full.concat(Object.values(value).map(v => [key, v.toString()]))
-				}
-				return full.concat([[key, value.toString()]])
-			}, [] as [string, string][]))
+			const searchParams = objToParams(newSearch)
 			if (typeof window !== 'undefined'){
 				setSearch(searchParams, navigate)
 			}
@@ -76,10 +70,17 @@ const useSearch = < Format extends FormatObjectType = FormatObjectType>(initialS
 			}
 			if (typeof window !== 'undefined'){
 				const current = r.full
-				current[p] = value.toString();
+				if (value === undefined){
+					delete current[p]
+				}
+				else {
+					current[p] = value.toString();
+				}
 				const searchParams = objToParams(current)
 				setSearch(searchParams)
+				return true;
 			}
+			return false;
 		},
 		
 	})
