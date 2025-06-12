@@ -16,7 +16,16 @@ const useSearch = < Format extends FormatObjectType = FormatObjectType>(initialS
 		navigate: false,
 		noReset: false
 	}
-	const setSearch = (searchParams: URLSearchParams) => window.history.pushState({}, '', `${window.location.pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`)
+	const setSearch = (searchParams: URLSearchParams, navigate = config.navigate) => {
+		if (typeof window !== 'undefined'){
+			if (navigate){
+				window.location.search = searchParams.toString()
+			}
+			else {
+				window.history.pushState({}, '', `${window.location.pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`)
+			}
+		}
+	}
 	const objToParams = (current: Format) => new URLSearchParams(Object.entries(current).reduce((full: [string, string][], [key, value]: [string, FormatObjectType[keyof FormatObjectType]]) => {
 		if (typeof value === 'object'){
 			return full.concat((value).map(v => [key, v.toString()]))
@@ -33,7 +42,7 @@ const useSearch = < Format extends FormatObjectType = FormatObjectType>(initialS
 				return full.concat([[key, value.toString()]])
 			}, [] as [string, string][]))
 			if (typeof window !== 'undefined'){
-				setSearch(searchParams)
+				setSearch(searchParams, navigate)
 			}
 		},
 		get: (t, p, r) => {

@@ -33,17 +33,3 @@ this would result in your url changing from yoursite.com/apath to yoursite.com/a
 search({a: "change", to: "search"})
 ```
 this would result in your url changing from yoursite.com/apath to yoursite.com/apath?a=change&to=search
-
-## Configuration
-
-the **search.config** value can be used to change search behaviors.
-
-### Navigate
-
-```
-search.config.navigate = true;
-```
-
-This changes the behavior so that rather than just changing the url string, it also navigates to the new url, causing a page reload. Within single page applications, this isn't really advisable unless you absolutely need to reload for some reason.
-
-That's all for now! Good luck!
