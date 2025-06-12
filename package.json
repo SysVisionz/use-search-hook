@@ -1,0 +1,26 @@
+{
+  "name": "use-search-hook",
+  "version": "1.0.0",
+  "description": "utilize this to quickly manipulate the search section of your url. Navigation may be enabled, but it not assumed. While built to be a react hook, it can be used in any style of Javascript application",
+  "keywords": ["url", "search", "tool", "URLSearchParams"],
+  "main": "build/index.js",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "Colin Brennan",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": "^16.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SysVisionz/use-search-hook.git"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1"
+  }
+}
