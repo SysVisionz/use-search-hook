@@ -23,7 +23,7 @@ const useSearch = < Format extends FormatObjectType = FormatObjectType>(config: 
 		}
 	}
 	const objToParams = (current: Format) => new URLSearchParams(Object.entries(current).reduce((full: [string, string][], [key, value]: [string, FormatObjectType[keyof FormatObjectType]]) => {
-		if (typeof value === 'object'){
+		if (Array.isArray(value)){
 			return full.concat((value).reduce((full, v) => {
 				return v === undefined ? full : [key, v.toString()]
 			}, [])
